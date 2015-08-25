@@ -8,6 +8,7 @@
     "angular-touch": "^1.4.4",
     "bluebird": "^2.9.34",
     "bootstrap": "^3.3.5",
+    "browserify": "^11.0.1",
     "confify": "^0.1.0",
     "jquery": "^2.1.4",
     "lodash": "^3.10.1",
