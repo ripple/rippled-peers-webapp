@@ -1,12 +1,9 @@
-# validators.ripple.com human user interface
-
-Completely static html, css, and javascript
-
-## Dependencies
+# rippled-peers-webapp
+Web dashboard for rippled peer network data
 
 ````
-npm install -g bower
-bower install
+git clone https://github.com/ripple/rippled-peers-webapp
+cd rippled-peers-webapp
 npm install
 ````
 
@@ -17,6 +14,11 @@ npm start
 ````
 
 Will start the development server on port 3000
+
+## Production Build
+````
+npm run build
+````
 
 ## Configuration
 
