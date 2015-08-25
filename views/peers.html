@@ -1,0 +1,40 @@
+<div class='row'>
+  <h1>Rippled Peer Dashboard</h1>
+  <div class="row">
+    <div class="col-md-12" class="disclaimer"> The Ripple Peer Dashboard is built and maintained by Ripple Labs, based on data from the Ripple Network. </div>
+    <div class="col-md-12" class="disclaimer"> Information is provided "as is" and solely as an informative resource. Data may be delayed or incorrect. </div>
+  </div>
+  <hr/>
+  <div class='loading row' ng-show='loading'>
+    <h2>{{status}}</h2>
+  </div>
+</div>
+
+<div class='row' ng-hide='loading'>
+  <table class='table table-striped'>
+
+    <thead>
+      <tr>
+        <th></th>
+        <th>Public Key</th>
+        <th>IP Address</th>
+        <th>Version</th>
+        <th>Inbound Connections</th>
+        <th>Outbound Connections</th>
+        <th>Uptime</th>
+      </tr>
+    </thead>
+
+    <tr ng-repeat="peer in peers" class='peer'>
+      <td></td>
+      <td>{{peer.public_key}}</td>
+      <td>{{peer.ip_address}}</td>
+      <td>{{peer.version}}</td>
+      <td>{{peer.inbound_connections}}</td>
+      <td>{{peer.outbound_connections}}</td>
+      <td>{{peer.uptime}}</td>
+    </tr>
+
+  </table>
+</div>
+
