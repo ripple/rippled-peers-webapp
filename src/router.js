@@ -10,8 +10,11 @@ app.config(function ($routeProvider) {
       templateUrl: 'views/peers.html',
       controller: 'PeersCtrl'
     })
+    .when('/graph', {
+      templateUrl: 'views/graph.html',
+      controller: 'GraphCtrl'
+    })
     .otherwise({
       redirectTo: '/'
     })
 })
-
