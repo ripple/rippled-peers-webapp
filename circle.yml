@@ -1,16 +1,17 @@
 test:
   override:
-    - echo "LOL NO TESTS"
+    - npm test
 deployment:
   staging:
     branch: staging
     commands:
       - rm -rf node_modules/
       - cp config/staging.json config/config.json
-      - rsync -avzP --delete . ec2-user@api-staging.validators.ripple.com:/opt/validators.ripple.com/webui
+      - rsync -avzP --delete . ubuntu@api-staging.peers.ripple.com:/opt/rippled-peers-api
   production:
     branch: master
     commands:
       - rm -rf node_modules/
       - cp config/production.json config/config.json
-      - rsync -avzP --delete . ec2-user@api-production.validators.ripple.com:/opt/validators.ripple.com/webui
+      - rsync -avzP --delete . ubuntu@api-production.peers.ripple.com:/opt/rippled-peers-api
+
