@@ -221,3 +221,13 @@ tr a:hover {
   margin-left: 5px;
   font-size: 12px;
 }
+
+.node {
+  stroke: #FFF;
+  stroke-width: 1.2px;
+}
+
+.link {
+  stroke: #999;
+  stroke-opacity: .2;
+}
