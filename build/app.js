@@ -58357,8 +58357,8 @@ app.controller('GraphCtrl', ['$scope', function ($scope) {
     var color = d3.scale.category20();
 
     var force = d3.layout.force()
-        .charge(-10)
-        .linkDistance(300)
+        .charge(-400)
+        .linkDistance(280)
         .size([width, height]);
 
     var svg = d3.select(".graph").append("svg")
@@ -58410,12 +58410,20 @@ app.controller('PeersCtrl', ['$scope', function ($scope) {
   $scope.status = "Loading Peers..."
 
   Peers.fetch().then(function(peers) {
+    // Sort peers by uptime
+    peers.sort(function(a, b){
+      var uptime_a = a.uptime ? a.uptime : -1;
+      var uptime_b = b.uptime ? b.uptime : -1;
+      if(uptime_a < uptime_b) return 1;
+      if(uptime_a > uptime_b) return -1;
+      return 0;
+    });
+
     $scope.loading = false
     $scope.peers = peers
     $scope.$apply()
   })
 }])
-
 
 },{"../app":26,"../services/Peers":33}],30:[function(require,module,exports){
 (function (global){

@@ -8,8 +8,7 @@ app.controller('PeersCtrl', ['$scope', function ($scope) {
 
   Peers.fetch().then(function(peers) {
     $scope.loading = false
-    $scope.peers = peers
+    $scope.peers = Peers.sortByUptime(peers);
     $scope.$apply()
   })
 }])
-
