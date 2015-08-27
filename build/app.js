@@ -58357,8 +58357,8 @@ app.controller('GraphCtrl', ['$scope', function ($scope) {
     var color = d3.scale.category20();
 
     var force = d3.layout.force()
-        .charge(-10)
-        .linkDistance(300)
+        .charge(-400)
+        .linkDistance(280)
         .size([width, height]);
 
     var svg = d3.select(".graph").append("svg")
