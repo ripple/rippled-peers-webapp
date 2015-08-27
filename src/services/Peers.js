@@ -16,6 +16,16 @@ module.exports = {
           }
         })
     })
+  },
+
+  sortByUptime: function(peers) {
+    peers.sort(function(a, b){
+      var uptime_a = a.uptime ? a.uptime : -1;
+      var uptime_b = b.uptime ? b.uptime : -1;
+      if(uptime_a < uptime_b) return 1;
+      if(uptime_a > uptime_b) return -1;
+      return 0;
+    });
+    return peers;
   }
 }
-
