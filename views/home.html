@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+
+<body>
+  <div class='row-md-2'>
+    <div class='col-md-7'>
+      <h1>Rippled Peer Dashboard</h1>
+      <span style='font-size:20px'
+      <p> The Rippled Peer Dashboard is a summary of the rippled peer network </p>
+
+      <h3>How it Works</h3>
+        <p>Every three seconds a snapshot is taken of the rippled peer network, which records status on each node in the network and its connections to other nodes.</p>
+      <p>Each node is a rippled and the links between the nodes are tcp connections. A node's size corresponds to the number of connections it has and its color indicates the software version</p>
+      <p>Blue nodes represent version 0.29.x and red nodes represent all earlier versions.</p>
+      </span>
+
+    </div>
+
+    <div class='loading row' ng-show='loadingGraph'>
+      <h2>{{statusGraph}}</h2>
+    </div>
+
+    <div class='col-md-5'>
+      <div class='pull-right'>
+      <h3>Global Network Stats</h3>
+      <ul>
+        <li class='global-stats-item'>Total Peers: {{peers.length}}</li>
+      </ul>
+      <hr/>
+      </div>
+      
+      <div class='graph'></div>
+    </div>
+    </div>
+  </div>
+
+  <div class='loading row' ng-show='loadingPeers'>
+    <h2>{{statusPeers}}</h2>
+  </div>
+
+  <table class='table table-striped'>
+
+    <thead>
+      <tr>
+        <th></th>
+        <th>Public Key</th>
+        <th>IP Address</th>
+        <th>Version</th>
+        <th>Inbound Connections</th>
+        <th>Outbound Connections</th>
+        <th>Uptime</th>
+      </tr>
+    </thead>
+
+    <tr ng-repeat="peer in peers" class='peer'>
+      <td></td>
+      <td>{{peer.public_key}}</td>
+      <td>{{peer.ip_address}}</td>
+      <td>{{peer.version}}</td>
+      <td>{{peer.inbound_connections}}</td>
+      <td>{{peer.outbound_connections}}</td>
+      <td>{{peer.uptime}}</td>
+    </tr>
+
+  </table>
+
+</body>
