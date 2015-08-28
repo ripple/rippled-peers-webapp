@@ -239,3 +239,7 @@ tr a:hover {
 .global-stats-item {
   font-size: 20px;
 }
+
+th.version {
+  width: 190px;
+}
