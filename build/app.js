@@ -58401,31 +58401,31 @@ app.controller('GraphCtrl', ['$scope', function ($scope) {
 }])
 
 },{"../app":26,"../services/Graph":32}],29:[function(require,module,exports){
-var app   = require('../app')
-var Peers = require('../services/Peers')
+(function (process){
+var app   = require('../app');
+var Peers = require('../services/Peers');
 
 app.controller('PeersCtrl', ['$scope', function ($scope) {
 
-  $scope.loading = true
-  $scope.status = "Loading Peers..."
+  $scope.loading = true;
+  $scope.status = 'Loading Peers...';
 
-  Peers.fetch().then(function(peers) {
-    // Sort peers by uptime
-    peers.sort(function(a, b){
-      var uptime_a = a.uptime ? a.uptime : -1;
-      var uptime_b = b.uptime ? b.uptime : -1;
-      if(uptime_a < uptime_b) return 1;
-      if(uptime_a > uptime_b) return -1;
-      return 0;
+  function fetchAndShow() {
+    Peers.fetch().then(function(peers) {
+      $scope.loading = false;
+      $scope.peers = Peers.sortByUptime(peers);
+      $scope.$apply();
     });
+    process.nextTick(function() {
+      setTimeout(fetchAndShow, 2000);
+    });
+  }
 
-    $scope.loading = false
-    $scope.peers = peers
-    $scope.$apply()
-  })
-}])
+  fetchAndShow();
+}]);
 
-},{"../app":26,"../services/Peers":33}],30:[function(require,module,exports){
+}).call(this,require('_process'))
+},{"../app":26,"../services/Peers":33,"_process":20}],30:[function(require,module,exports){
 (function (global){
 global.$ = global.jQuery = require('jquery')
 
@@ -58506,8 +58506,17 @@ module.exports = {
           }
         })
     })
+  },
+
+  sortByUptime: function(peers) {
+    peers.sort(function(a, b){
+      var uptime_a = a.uptime ? a.uptime : -1;
+      var uptime_b = b.uptime ? b.uptime : -1;
+      if (uptime_b !== uptime_a) return uptime_b - uptime_a;
+      return b.public_key > a.public_key ? 1 : -1;
+    });
+    return peers;
   }
 }
-
 
 },{"../config":27,"bluebird":6,"superagent":23}]},{},[30]);
