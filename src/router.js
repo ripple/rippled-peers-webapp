@@ -4,7 +4,11 @@ app.config(function ($routeProvider) {
 
   $routeProvider
     .when('/', {
-      redirectTo: '/peers'
+      redirectTo: '/home'
+    })
+    .when('/home', {
+      templateUrl: 'views/home.html',
+      controller: 'HomeCtrl'
     })
     .when('/peers', {
       templateUrl: 'views/peers.html',

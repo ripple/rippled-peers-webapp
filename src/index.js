@@ -9,6 +9,7 @@ require('bootstrap')
 require('./app')
 require('./controllers/PeersController')
 require('./controllers/GraphController')
+require('./controllers/HomeController')
 require('./router')
 
 require('d3')

@@ -229,5 +229,9 @@ tr a:hover {
 
 .link {
   stroke: #999;
-  stroke-opacity: .2;
+  stroke-opacity: .1;
+}
+
+.graph {
+  float: right;
 }

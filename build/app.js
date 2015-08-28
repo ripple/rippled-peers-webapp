@@ -58326,81 +58326,38 @@ app.controller('GraphCtrl', ['$scope', function ($scope) {
   $scope.status = "Loading Graph..."
 
   Graph.fetch().then(function(graph) {
+    Graph.produce(graph, ".graph", 800, 1200, 290, -250, 300, 0.5)
     $scope.loading = false
-    $scope.graph = graph
     $scope.$apply()
-
-    function versionToColor(version) {
-      var green = "#4890CE"
-      var yellow = "#FDB34D"
-      var red = "#C0464B"
-      var color = '#000000';
-
-      if (version) {
-        var v_arr = version.split("-");
-        var v_str = v_arr[1];
-        var split = v_str.split('.');
-        var v_num = parseInt(split[0] + split[1] + split[2]);
-
-        if (v_num < 290)
-          color = red;
-        else
-          color = green;
-      }
-
-      return color
-    }
-
-    var width = 1200,
-        height = 800;
-
-    var color = d3.scale.category20();
-
-    var force = d3.layout.force()
-        .charge(-400)
-        .linkDistance(280)
-        .size([width, height]);
-
-    var svg = d3.select(".graph").append("svg")
-        .attr("width", width)
-        .attr("height", height);
-
-    force
-        .nodes(graph.nodes)
-        .links(graph.links)
-        .start();
-
-    var link = svg.selectAll(".link")
-        .data(graph.links)
-        .enter().append("line")
-        .attr("class", "link")
-        //.style("stroke-width", function(d) { return Math.sqrt(1); });
-
-    var node = svg.selectAll(".node")
-        .data(graph.nodes)
-        .enter().append("circle")
-        .attr("class", "node")
-        .attr("r", function(d) { return parseInt(d.in) + parseInt(d.out) ? Math.sqrt(parseInt(d.in) + parseInt(d.out)) + 2 : 2; })
-        .style("fill", function(d) { return versionToColor(d.version); })
-        .call(force.drag);
-
-    node.append("title")
-        .text(function(d) { return d.public_key; });
-
-    force.on("tick", function() {
-      link.attr("x1", function(d) { return d.source.x; })
-          .attr("y1", function(d) { return d.source.y; })
-          .attr("x2", function(d) { return d.target.x; })
-          .attr("y2", function(d) { return d.target.y; });
-
-      node.attr("cx", function(d) { return d.x; })
-          .attr("cy", function(d) { return d.y; });
-    });
-
   })
 }])
 
-},{"../app":26,"../services/Graph":32}],29:[function(require,module,exports){
+},{"../app":26,"../services/Graph":33}],29:[function(require,module,exports){
+var app   = require('../app')
+var Peers = require('../services/Peers')
+var Graph = require('../services/Graph')
+
+app.controller('HomeCtrl', ['$scope', function ($scope) {
+
+  $scope.loadingPeers = true
+  $scope.loadingGraph = true
+  $scope.statusPeers = "Loading Peers..."
+  $scope.statusGraph = "Loading Graph..."
+
+  Peers.fetch().then(function(peers) {
+    $scope.peers = Peers.sortByUptime(peers)
+    $scope.loadingGraph = false
+    $scope.$apply()
+  })
+
+  Graph.fetch().then(function(graph) {
+    Graph.produce(graph, ".graph", 400, 540, 290, -200, 100, 0.4)
+    $scope.loadingPeers = false
+    $scope.$apply()
+  })
+}])
+
+},{"../app":26,"../services/Graph":33,"../services/Peers":34}],30:[function(require,module,exports){
 (function (process){
 var app   = require('../app');
 var Peers = require('../services/Peers');
@@ -58425,7 +58382,7 @@ app.controller('PeersCtrl', ['$scope', function ($scope) {
 }]);
 
 }).call(this,require('_process'))
-},{"../app":26,"../services/Peers":33,"_process":20}],30:[function(require,module,exports){
+},{"../app":26,"../services/Peers":34,"_process":20}],31:[function(require,module,exports){
 (function (global){
 global.$ = global.jQuery = require('jquery')
 
@@ -58438,19 +58395,24 @@ require('bootstrap')
 require('./app')
 require('./controllers/PeersController')
 require('./controllers/GraphController')
+require('./controllers/HomeController')
 require('./router')
 
 require('d3')
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./app":26,"./controllers/GraphController":28,"./controllers/PeersController":29,"./router":31,"angular":5,"angular-route/angular-route":1,"angular-sanitize/angular-sanitize":2,"angular-touch/angular-touch":3,"bootstrap":7,"d3":21,"jquery":22}],31:[function(require,module,exports){
+},{"./app":26,"./controllers/GraphController":28,"./controllers/HomeController":29,"./controllers/PeersController":30,"./router":32,"angular":5,"angular-route/angular-route":1,"angular-sanitize/angular-sanitize":2,"angular-touch/angular-touch":3,"bootstrap":7,"d3":21,"jquery":22}],32:[function(require,module,exports){
 var app = require('./app')
 
 app.config(function ($routeProvider) {
 
   $routeProvider
     .when('/', {
-      redirectTo: '/peers'
+      redirectTo: '/home'
+    })
+    .when('/home', {
+      templateUrl: 'views/home.html',
+      controller: 'HomeCtrl'
     })
     .when('/peers', {
       templateUrl: 'views/peers.html',
@@ -58465,13 +58427,13 @@ app.config(function ($routeProvider) {
     })
 })
 
-},{"./app":26}],32:[function(require,module,exports){
+},{"./app":26}],33:[function(require,module,exports){
 var http    = require('superagent')
 var Promise = require('bluebird')
 var config  = require('../config')
 
 module.exports = {
-  
+
   fetch: function() {
     return new Promise(function(resolve, reject) {
       http
@@ -58484,10 +58446,76 @@ module.exports = {
           }
         })
     })
+  },
+
+  produce: function(graph, element, height, width, latest_version, charge, link_distance, growth_factor) {
+
+    function versionToColor(version) {
+      var green = "#4890CE"
+      var yellow = "#FDB34D"
+      var red = "#C0464B"
+      var color = '#FFFFFF';
+
+      if (version) {
+        var v_arr = version.split("-");
+        var v_str = v_arr[1];
+        var split = v_str.split('.');
+        var v_num = parseInt(split[0] + split[1] + split[2]);
+
+        if (v_num < latest_version)
+          color = red;
+        else
+          color = green;
+      }
+
+      return color
+    }
+
+    var color = d3.scale.category20();
+
+    var force = d3.layout.force()
+        .charge(charge)
+        .linkDistance(link_distance)
+        .size([width, height]);
+
+    var svg = d3.select(element).append("svg").style("float", "right")
+        .attr("width", width)
+        .attr("height", height)
+
+    force
+        .nodes(graph.nodes)
+        .links(graph.links)
+        .start();
+
+    var link = svg.selectAll(".link")
+        .data(graph.links)
+        .enter().append("line")
+        .attr("class", "link")
+
+    var node = svg.selectAll(".node")
+        .data(graph.nodes)
+        .enter().append("circle")
+        .attr("class", "node")
+        .attr("r", function(d) { return parseInt(d.in) + parseInt(d.out) ? Math.pow(parseInt(d.in) + parseInt(d.out), growth_factor) + 1 : 1;})
+        .style("fill", function(d) { return versionToColor(d.version); })
+        .call(force.drag);
+
+    node.append("title")
+        .text(function(d) { return d.public_key; });
+
+    force.on("tick", function() {
+      link.attr("x1", function(d) { return d.source.x; })
+          .attr("y1", function(d) { return d.source.y; })
+          .attr("x2", function(d) { return d.target.x; })
+          .attr("y2", function(d) { return d.target.y; });
+
+      node.attr("cx", function(d) { return d.x; })
+          .attr("cy", function(d) { return d.y; });
+    });
   }
 }
 
-},{"../config":27,"bluebird":6,"superagent":23}],33:[function(require,module,exports){
+},{"../config":27,"bluebird":6,"superagent":23}],34:[function(require,module,exports){
 var http    = require('superagent')
 var Promise = require('bluebird')
 var config  = require('../config')
@@ -58519,4 +58547,4 @@ module.exports = {
   }
 }
 
-},{"../config":27,"bluebird":6,"superagent":23}]},{},[30]);
+},{"../config":27,"bluebird":6,"superagent":23}]},{},[31]);
