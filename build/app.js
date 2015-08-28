@@ -58333,6 +58333,7 @@ app.controller('GraphCtrl', ['$scope', function ($scope) {
 }])
 
 },{"../app":26,"../services/Graph":33}],29:[function(require,module,exports){
+(function (process){
 var app   = require('../app')
 var Peers = require('../services/Peers')
 var Graph = require('../services/Graph')
@@ -58344,20 +58345,28 @@ app.controller('HomeCtrl', ['$scope', function ($scope) {
   $scope.statusPeers = "Loading Peers..."
   $scope.statusGraph = "Loading Graph..."
 
-  Peers.fetch().then(function(peers) {
-    $scope.peers = Peers.sortByUptime(peers)
-    $scope.loadingGraph = false
-    $scope.$apply()
-  })
+  function fetchAndShow() {
+    Peers.fetch().then(function(peers) {
+      $scope.loadingPeers = false
+      $scope.peers = Peers.sortByUptime(peers)
+      $scope.$apply()
+    })
+    process.nextTick(function() {
+      setTimeout(fetchAndShow, 2000)
+    })
+  }
+
+  fetchAndShow()
 
   Graph.fetch().then(function(graph) {
     Graph.produce(graph, ".graph", 400, 540, 290, -200, 100, 0.4)
-    $scope.loadingPeers = false
+    $scope.loadingGraph = false
     $scope.$apply()
   })
 }])
 
-},{"../app":26,"../services/Graph":33,"../services/Peers":34}],30:[function(require,module,exports){
+}).call(this,require('_process'))
+},{"../app":26,"../services/Graph":33,"../services/Peers":34,"_process":20}],30:[function(require,module,exports){
 (function (process){
 var app   = require('../app');
 var Peers = require('../services/Peers');
@@ -58408,9 +58417,6 @@ app.config(function ($routeProvider) {
 
   $routeProvider
     .when('/', {
-      redirectTo: '/home'
-    })
-    .when('/home', {
       templateUrl: 'views/home.html',
       controller: 'HomeCtrl'
     })

@@ -3,16 +3,35 @@
 
 <body>
   <div class='row-md-2'>
-    <div class='col-md-6'>
+    <div class='col-md-7'>
       <h1>Rippled Peer Dashboard</h1>
-      <div class="row-md-2"> The Rippled Peer Dashboard is a summary of the rippled network </div>
-      <div class="row-md-2"> Peers are rippleds which hold tcp connections with other peers. </div>
+      <span style='font-size:20px'
+      <p> The Rippled Peer Dashboard is a summary of the rippled peer network </p>
+
+      <h3>How it Works</h3>
+        <p>Every three seconds a snapshot is taken of the rippled peer network, which records status on each node in the network and its connections to other nodes.</p>
+      <p>Each node is a rippled and the links between the nodes are tcp connections. A node's size corresponds to the number of connections it has and its color indicates the software version</p>
+      <p>Blue nodes represent version 0.29.x and red nodes represent all earlier versions.</p>
+      </span>
+
     </div>
 
     <div class='loading row' ng-show='loadingGraph'>
       <h2>{{statusGraph}}</h2>
     </div>
-    <a href="/#/graph"> <div class='graph col-md-6'></div> </a>
+
+    <div class='col-md-5'>
+      <div class='pull-right'>
+      <h3>Global Network Stats</h3>
+      <ul>
+        <li class='global-stats-item'>Total Peers: {{peers.length}}</li>
+      </ul>
+      <hr/>
+      </div>
+      
+      <div class='graph'></div>
+    </div>
+    </div>
   </div>
 
   <div class='loading row' ng-show='loadingPeers'>

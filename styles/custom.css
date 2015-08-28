@@ -235,3 +235,7 @@ tr a:hover {
 .graph {
   float: right;
 }
+
+.global-stats-item {
+  font-size: 20px;
+}

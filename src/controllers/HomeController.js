@@ -9,15 +9,22 @@ app.controller('HomeCtrl', ['$scope', function ($scope) {
   $scope.statusPeers = "Loading Peers..."
   $scope.statusGraph = "Loading Graph..."
 
-  Peers.fetch().then(function(peers) {
-    $scope.peers = Peers.sortByUptime(peers)
-    $scope.loadingGraph = false
-    $scope.$apply()
-  })
+  function fetchAndShow() {
+    Peers.fetch().then(function(peers) {
+      $scope.loadingPeers = false
+      $scope.peers = Peers.sortByUptime(peers)
+      $scope.$apply()
+    })
+    process.nextTick(function() {
+      setTimeout(fetchAndShow, 2000)
+    })
+  }
+
+  fetchAndShow()
 
   Graph.fetch().then(function(graph) {
     Graph.produce(graph, ".graph", 400, 540, 290, -200, 100, 0.4)
-    $scope.loadingPeers = false
+    $scope.loadingGraph = false
     $scope.$apply()
   })
 }])
