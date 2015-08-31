@@ -19,7 +19,14 @@
         <th class="version">Version</th>
         <th>Inbound Connections</th>
         <th>Outbound Connections</th>
-        <th>Uptime</th>
+        <th class="uptime">
+          Uptime
+          <button type="button" class="tooltip-btn btn btn-default"
+            data-placement="top"
+            title="age of peer's longest current connection"
+            onmouseenter="$(this).tooltip('show')">?
+          </button>
+        </th>
       </tr>
     </thead>
 
