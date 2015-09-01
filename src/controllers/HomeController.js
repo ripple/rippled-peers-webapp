@@ -12,7 +12,8 @@ app.controller('HomeCtrl', ['$scope', function ($scope) {
   function fetchAndShow() {
     Peers.fetch().then(function(peers) {
       $scope.loadingPeers = false
-      $scope.peers = Peers.sortByUptime(peers)
+      peers = Peers.formatUptimes(peers);
+      $scope.peers = Peers.sortByUptime(peers);
       $scope.$apply()
     })
     process.nextTick(function() {
