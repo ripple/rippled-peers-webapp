@@ -70735,6 +70735,7 @@ app.controller('PeersCtrl', ['$scope', function ($scope) {
   function fetchAndShow() {
     Peers.fetch().then(function(peers) {
       $scope.loading = false;
+      peers = Peers.formatUptimes(peers);
       $scope.peers = Peers.sortByUptime(peers);
       $scope.$apply();
     });
@@ -70909,10 +70910,10 @@ module.exports = {
       minutes -= hours * 60;
       var days = Math.floor(hours / 24);
       hours -= days * 24;
-      var dayName = days + '\t' + 'Day' + (days > 1 ? 's' : '');
-      var hourName = hours + '\t' + 'Hour' + (hours > 1 ? 's' : '');
-      var minName = minutes + '\t' + 'min';
-      var secName = seconds + '\t' + 'sec';
+      var dayName = days + ' ' + 'Day' + (days > 1 ? 's' : '');
+      var hourName = hours + ' ' + 'Hour' + (hours > 1 ? 's' : '');
+      var minName = minutes + ' ' + 'min';
+      var secName = seconds + ' ' + 'sec';
 
       if (days > 0) return { name: dayName, time: days * 60 * 60 * 24 };
       else if (hours > 0) return { name: hourName, time: hours * 60 * 60 };
