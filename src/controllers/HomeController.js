@@ -13,12 +13,15 @@ app.controller('HomeCtrl', ['$scope', function ($scope) {
     Peers.fetch().then(function(peers) {
       $scope.loadingPeers = false
       peers = Peers.formatUptimes(peers);
-      $scope.peers = Peers.sortByUptime(peers);
-      $scope.$apply()
-    })
+      peers = Peers.sortByUptime(peers);
+      var sp = Peers.mergeOldAndNew(peers, $scope.peers);
+      $scope.peers = sp;
+      $scope.$apply();
+      Peers.animateChange(['inbound_connections', 'outbound_connections', 'uptime_formatted']);
+    });
     process.nextTick(function() {
       setTimeout(fetchAndShow, 2000)
-    })
+    });
   }
 
   fetchAndShow()
