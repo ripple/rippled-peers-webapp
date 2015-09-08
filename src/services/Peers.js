@@ -2,6 +2,8 @@ var http    = require('superagent')
 var Promise = require('bluebird')
 var config  = require('../config')
 var _  = require('lodash')
+var $ = require('jquery')
+require('jquery-ui');
 
 module.exports = {
 
@@ -56,5 +58,43 @@ module.exports = {
       return b.public_key > a.public_key ? 1 : -1;
     });
     return peers;
+  },
+
+  mergeOldAndNew: function(newPeers, oldPeers) {
+    var oldPeersByPubKey = {};
+    _.each(oldPeers, function(item) {
+      oldPeersByPubKey[item.new.public_key] = item.new;
+    });
+    var ret = _.map(newPeers, function(p) {
+      return { new: p, old: oldPeersByPubKey[p.public_key]};
+    });
+    return ret;
+  },
+
+  animateChange: function(propertyArray) {
+    function animate($element, oldValue, newValue) {
+      var originalColor = $element.css('color');
+      var toColor = newValue > oldValue ? '#00FF00' : '#FF0000';
+      $element.animate({'opacity': 0}, 0, function() {
+        $element.html(newValue);
+        $element.animate({'color': toColor, 'opacity': 1}, 200, function() {
+          $element.animate({'color': originalColor}, 600);
+        });
+      });
+    }
+
+    _.each(propertyArray, function(prop) {
+      var tds = $('td.' + prop);
+      tds.each(function(index, td) {
+        var $td = $(td);
+        var nv = $td.attr('data-new');
+        var ov = $td.attr('data-old');
+        if (nv !== ov) {
+          animate($td, ov, nv);
+        } else {
+          $td.html(nv);
+        }
+      });
+    });
   }
 }
