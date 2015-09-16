@@ -34,41 +34,41 @@
     </div>
   </div>
 
-  <div class='loading row' ng-show='loadingPeers'>
-    <h2>{{statusPeers}}</h2>
-  </div>
+  <div class='row'>
+    <h2 class='loading' ng-show='loadingPeers'>{{statusPeers}}</h2>
 
-  <table class='table table-striped'>
+    <table class='table table-striped'>
 
-    <thead>
-      <tr>
-        <th></th>
-        <th>Public Key</th>
-        <th>IP Address</th>
-        <th class='version'>Version</th>
-        <th>Inbound Connections</th>
-        <th>Outbound Connections</th>
-        <th class="uptime">
-          Uptime
-          <button type="button" class="tooltip-btn btn btn-default"
-            data-placement="top"
-            title="age of peer's longest current connection"
-            onmouseenter="$(this).tooltip('show')">?
-          </button>
-        </th>
+      <thead>
+        <tr>
+          <th></th>
+          <th>Public Key</th>
+          <th>IP Address</th>
+          <th class='version'>Version</th>
+          <th>Inbound Connections</th>
+          <th>Outbound Connections</th>
+          <th class="uptime">
+            Uptime
+            <button type="button" class="tooltip-btn btn btn-default"
+              data-placement="top"
+              title="age of peer's longest current connection"
+              onmouseenter="$(this).tooltip('show')">?
+            </button>
+          </th>
+        </tr>
+      </thead>
+
+      <tr ng-repeat="peer in peers" class='peer'>
+        <td></td>
+        <td>{{peer.new.public_key}}</td>
+        <td>{{peer.new.ip_address}}</td>
+        <td>{{peer.new.version}}</td>
+        <td class="inbound_connections" data-old="{{peer.old.inbound_connections}}" data-new="{{peer.new.inbound_connections}}"></td>
+        <td class="outbound_connections" data-old="{{peer.old.outbound_connections}}" data-new="{{peer.new.outbound_connections}}"></td>
+        <td class="uptime_formatted" data-old="{{peer.old.uptime_formatted}}" data-new="{{peer.new.uptime_formatted}}"></td>
       </tr>
-    </thead>
 
-    <tr ng-repeat="peer in peers" class='peer'>
-      <td></td>
-      <td>{{peer.new.public_key}}</td>
-      <td>{{peer.new.ip_address}}</td>
-      <td>{{peer.new.version}}</td>
-      <td class="inbound_connections" data-old="{{peer.old.inbound_connections}}" data-new="{{peer.new.inbound_connections}}"></td>
-      <td class="outbound_connections" data-old="{{peer.old.outbound_connections}}" data-new="{{peer.new.outbound_connections}}"></td>
-      <td class="uptime_formatted" data-old="{{peer.old.uptime_formatted}}" data-new="{{peer.new.uptime_formatted}}"></td>
-    </tr>
-
-  </table>
+    </table>
+  </div>
 
 </body>
