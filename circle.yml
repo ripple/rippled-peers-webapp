@@ -7,11 +7,11 @@ deployment:
     commands:
       - rm -rf node_modules/
       - cp config/staging.json config/config.json
-      - rsync -avzP --delete . ubuntu@api-staging.peers.ripple.com:/opt/rippled-peers-api
+      - rsync -avzP --delete . ubuntu@api-staging.peers.ripple.com:/opt/rippled-peers-webapp
   production:
     branch: master
     commands:
       - rm -rf node_modules/
       - cp config/production.json config/config.json
-      - rsync -avzP --delete . ubuntu@api-production.peers.ripple.com:/opt/rippled-peers-api
+      - rsync -avzP --delete . ubuntu@api-production.peers.ripple.com:/opt/rippled-peers-webapp
 

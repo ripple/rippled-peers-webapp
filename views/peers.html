@@ -1,8 +1,6 @@
 <div class='row'>
   <h1>Rippled Peer Dashboard</h1>
   <div class="row">
-    <div class="col-md-12" class="disclaimer"> The Ripple Peer Dashboard is built and maintained by Ripple Labs, based on data from the Ripple Network. </div>
-    <div class="col-md-12" class="disclaimer"> Information is provided "as is" and solely as an informative resource. Data may be delayed or incorrect. </div>
   </div>
   <hr/>
   <div class='loading row' ng-show='loading'>
@@ -18,23 +16,29 @@
         <th></th>
         <th>Public Key</th>
         <th>IP Address</th>
-        <th>Version</th>
+        <th class="version">Version</th>
         <th>Inbound Connections</th>
         <th>Outbound Connections</th>
-        <th>Uptime</th>
+        <th class="uptime">
+          Uptime
+          <button type="button" class="tooltip-btn btn btn-default"
+            data-placement="top"
+            title="age of peer's longest current connection"
+            onmouseenter="$(this).tooltip('show')">?
+          </button>
+        </th>
       </tr>
     </thead>
 
     <tr ng-repeat="peer in peers" class='peer'>
       <td></td>
-      <td>{{peer.public_key}}</td>
-      <td>{{peer.ip_address}}</td>
-      <td>{{peer.version}}</td>
-      <td>{{peer.inbound_connections}}</td>
-      <td>{{peer.outbound_connections}}</td>
-      <td>{{peer.uptime}}</td>
+      <td>{{peer.new.public_key}}</td>
+      <td>{{peer.new.ip_address}}</td>
+      <td>{{peer.new.version}}</td>
+      <td class="inbound_connections" data-old="{{peer.old.inbound_connections}}" data-new="{{peer.new.inbound_connections}}"></td>
+      <td class="outbound_connections" data-old="{{peer.old.outbound_connections}}" data-new="{{peer.new.outbound_connections}}"></td>
+      <td class="uptime_formatted" data-old="{{peer.old.uptime_formatted}}" data-new="{{peer.new.uptime_formatted}}"></td>
     </tr>
 
   </table>
 </div>
-

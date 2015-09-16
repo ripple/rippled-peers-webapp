@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+
+<body>
+
+  <div class='row'>
+    <h1>Rippled Peer Graph</h1>
+    <div class="row">
+      <div class="col-md-12"> The Ripple Peer Graph is a visual representation of the rippled network. </div>
+      <div class="col-md-12"> Each node is a rippled and the links between the nodes are tcp connections.  </div>
+      <div class="col-md-12"> A node's size corresponds to the number of connections it has and its color indicates the software version </div>
+    </div>
+    <hr/>
+    <div class='loading row' ng-show='loading'>
+      <h2>{{status}}</h2>
+    </div>
+  </div>
+
+  <div class='row' ng-hide='loading'>
+    <div class='graph'></div>
+  </div>
+
+</body>
