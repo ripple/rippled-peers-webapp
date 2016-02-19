@@ -18,7 +18,7 @@ module.exports = {
     })
   },
 
-  produce: function(graph, element, height, width, latest_version, charge, link_distance, growth_factor) {
+  produce: function(graph, element, height, width, charge, link_distance, growth_factor) {
 
     function versionToColor(version) {
       var green = "#4890CE"
@@ -32,7 +32,7 @@ module.exports = {
         var split = v_str.split('.');
         var v_num = parseInt(split[0] + split[1] + split[2]);
 
-        if (v_num < latest_version)
+        if (v_num < config.LATEST_VERSION)
           color = red;
         else
           color = green;
