@@ -27,7 +27,7 @@ app.controller('HomeCtrl', ['$scope', function ($scope) {
   fetchAndShow()
 
   Graph.fetch().then(function(graph) {
-    Graph.produce(graph, ".graph", 400, 540, 290, -200, 100, 0.4)
+    Graph.produce(graph, ".graph", 400, 540, -200, 100, 0.4)
     $scope.loadingGraph = false
     $scope.$apply()
   })

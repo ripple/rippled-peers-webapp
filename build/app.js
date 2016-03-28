@@ -85688,7 +85688,7 @@ app.controller('GraphCtrl', ['$scope', function ($scope) {
   $scope.status = "Loading Graph..."
 
   Graph.fetch().then(function(graph) {
-    Graph.produce(graph, ".graph", 800, 1200, 290, -250, 300, 0.5)
+    Graph.produce(graph, ".graph", 800, 1200, -250, 300, 0.5)
     $scope.loading = false
     $scope.$apply()
   })
@@ -85725,7 +85725,7 @@ app.controller('HomeCtrl', ['$scope', function ($scope) {
   fetchAndShow()
 
   Graph.fetch().then(function(graph) {
-    Graph.produce(graph, ".graph", 400, 540, 290, -200, 100, 0.4)
+    Graph.produce(graph, ".graph", 400, 540, -200, 100, 0.4)
     $scope.loadingGraph = false
     $scope.$apply()
   })
@@ -85824,7 +85824,7 @@ module.exports = {
     })
   },
 
-  produce: function(graph, element, height, width, latest_version, charge, link_distance, growth_factor) {
+  produce: function(graph, element, height, width, charge, link_distance, growth_factor) {
 
     function versionToColor(version) {
       var green = "#4890CE"
@@ -85838,7 +85838,7 @@ module.exports = {
         var split = v_str.split('.');
         var v_num = parseInt(split[0] + split[1] + split[2]);
 
-        if (v_num < latest_version)
+        if (v_num < config.LATEST_VERSION)
           color = red;
         else
           color = green;
@@ -85968,7 +85968,6 @@ module.exports = {
   animateChange: function(propertyArray) {
     function animate($element, oldValue, newValue) {
       var originalColor = $element.css('color');
-      console.log($element.css('color'));
       var toColor = newValue > oldValue ? '#00FF00' : '#FF0000';
       $element.animate({'opacity': 0}, 0, function() {
         $element.html(newValue);

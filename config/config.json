@@ -1,3 +1,4 @@
 {
-  "PEERS_API_URL": "https:api-staging.peers.ripple.com"
+  "PEERS_API_URL": "https:api-staging.peers.ripple.com",
+  "LATEST_VERSION": 301
 }

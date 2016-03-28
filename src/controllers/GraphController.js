@@ -7,7 +7,7 @@ app.controller('GraphCtrl', ['$scope', function ($scope) {
   $scope.status = "Loading Graph..."
 
   Graph.fetch().then(function(graph) {
-    Graph.produce(graph, ".graph", 800, 1200, 290, -250, 300, 0.5)
+    Graph.produce(graph, ".graph", 800, 1200, -250, 300, 0.5)
     $scope.loading = false
     $scope.$apply()
   })
